@@ -1,63 +1,87 @@
 package com.amaap.troop.domain;
 
 import com.amaap.troop.exceptions.InvalidQuantityException;
+import com.amaap.troop.exceptions.InvalidTrainingCostException;
+import com.amaap.troop.exceptions.InvalidTrainingTimeException;
 import com.amaap.troop.exceptions.InvalidTroopTypeException;
 
 import java.util.EnumSet;
 import java.util.Objects;
 
-public class Troop {
+    public class Troop {
+        public Troopers troopType;
+        public int quantity;
+        public int trainingTime; // in seconds
+        public int trainingCost; // in magic potions
+        public boolean isTrainingComplete;
 
-    Troopers troopType;
-    int quantity;
+        public static Troop create(Troopers troopType, int quantity, int trainingTime, int trainingCost) throws InvalidTroopTypeException, InvalidQuantityException, InvalidTrainingTimeException, InvalidTrainingCostException {
+            if (isInvalidTroopType(troopType))
+                throw new InvalidTroopTypeException("No Troop Type Found");
+            if (isInvalidTroopQuantity(quantity))
+                throw new InvalidQuantityException("Invalid quantity");
 
-    public Troop(Troopers troopType, int quantity) {
-        this.troopType = troopType;
-        this.quantity = quantity;
-    }
+            if (!isValidTrainingTime(troopType, trainingTime))
+                throw new InvalidTrainingTimeException("Invalid training time for " + troopType);
+            if (!isValidTrainingCost(troopType, trainingCost))
+                throw new InvalidTrainingCostException("Invalid training cost for " + troopType);
+            return new Troop(troopType, quantity, trainingTime, trainingCost);
+        }
 
-    public static Troop create(Troopers troopType, int quantity) throws InvalidTroopTypeException, InvalidQuantityException {
-        if (isInvalidTroopType(troopType))
-            throw new InvalidTroopTypeException("No Troop Type Found");
-        if (isInvalidTroopQuantity(quantity))
-            throw new InvalidQuantityException("Invalid quantity");
-        return new Troop(troopType, quantity);
-    }
+        private Troop(Troopers troopType, int quantity, int trainingTime, int trainingCost) {
+            this.troopType = troopType;
+            this.quantity = quantity;
+            this.trainingTime = trainingTime;
+            this.trainingCost = trainingCost;
+            this.isTrainingComplete = false;
+        }
 
-    public static boolean isInvalidTroopType(Troopers troopType) {
-        return !isValidTroopType(troopType);
-    }
+        public static boolean isInvalidTroopType(Troopers troopType) {
+            return !isValidTroopType(troopType);
+        }
 
-    public static boolean isValidTroopType(Troopers troopType) {
-        EnumSet<Troopers> troopTypes = EnumSet.allOf(Troopers.class);
-        if (troopTypes.contains(troopType))
+        public static boolean isValidTroopType(Troopers troopType) {
+            EnumSet<Troopers> troopTypes = EnumSet.allOf(Troopers.class);
+            return troopTypes.contains(troopType);
+        }
+
+        public static boolean isInvalidTroopQuantity(int quantity) {
+            return !isValidTroopQuantity(quantity);
+        }
+
+        public static boolean isValidTroopQuantity(int quantity) {
+            return quantity >= 0 && quantity <= 10;
+        }
+
+        private static boolean isValidTrainingTime(Troopers troopType, int trainingTime) {
+            if (troopType == Troopers.Barbarian && trainingTime != 3)
+                return false;
+            if (troopType == Troopers.Archer && trainingTime != 6)
+                return false;
             return true;
-        return false;
-    }
+        }
 
-    public static boolean isInvalidTroopQuantity(int quantity) {
-        return !isValidTroopQuantity(quantity);
-    }
-
-    private static boolean isValidTroopQuantity(int quantity) {
-
-        if(quantity >=0 && quantity <= 10)
+        private static boolean isValidTrainingCost(Troopers troopType, int trainingCost) {
+            if (troopType == Troopers.Barbarian && trainingCost != 10)
+                return false;
+            if (troopType == Troopers.Archer && trainingCost != 20)
+                return false;
             return true;
-        return false;
+        }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Troop troop = (Troop) o;
+            return quantity == troop.quantity && troopType == troop.troopType;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(troopType, quantity);
+        }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Troop troop = (Troop) o;
-        return quantity == troop.quantity && troopType == troop.troopType;
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(troopType, quantity);
-    }
-    }
 
