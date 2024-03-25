@@ -3,6 +3,8 @@ package com.amaap.trooptest.domain;
 import com.amaap.troop.domain.Troop;
 import com.amaap.troop.domain.Troopers;
 import com.amaap.troop.exceptions.InvalidQuantityException;
+import com.amaap.troop.exceptions.InvalidTrainingCostException;
+import com.amaap.troop.exceptions.InvalidTrainingTimeException;
 import com.amaap.troop.exceptions.InvalidTroopTypeException;
 import org.junit.jupiter.api.Test;
 
@@ -11,45 +13,53 @@ import static org.junit.jupiter.api.Assertions.*;
 class TroopTest {
 
     @Test
-    void shouldCreateTroopWithValidTypeAndQuantity() throws InvalidTroopTypeException, InvalidQuantityException {
+    void shouldAbleToCreateTroopWithValidTypeAndQuantity() throws InvalidTroopTypeException, InvalidQuantityException, InvalidTrainingTimeException, InvalidTrainingCostException {
         // Arrange
         Troopers troopType = Troopers.Barbarian;
         int quantity = 5;
+        int trainingTime = 3; // Default training time for Barbarians
+        int trainingCost = 10; // Default training cost for Barbarians
 
         // Act
-        Troop troop = Troop.create(troopType, quantity);
+        Troop troop = Troop.create(troopType, quantity, trainingTime, trainingCost);
 
         // Assert
         assertEquals(troopType, troop.troopType);
         assertEquals(quantity, troop.quantity);
+        assertEquals(trainingTime, troop.trainingTime);
+        assertEquals(trainingCost, troop.trainingCost);
     }
 
     @Test
-    void shouldThrowExceptionForInvalidTroopType() {
+    void shouldAbleThrowExceptionForInvalidTroopType() {
         // Arrange
         Troopers invalidTroopType = null;
         int quantity = 5;
+        int trainingTime = 3; // Default training time for Barbarians
+        int trainingCost = 10; // Default training cost for Barbarians
 
         // Act and Assert
         assertThrows(InvalidTroopTypeException.class, () -> {
-            Troop.create(invalidTroopType, quantity);
+            Troop.create(invalidTroopType, quantity, trainingTime, trainingCost);
         });
     }
 
     @Test
-    void shouldThrowExceptionForInvalidQuantity() {
+    void shouldAbleThrowExceptionForInvalidQuantity() {
         // Arrange
         Troopers troopType = Troopers.Archer;
         int invalidQuantity = -1;
+        int trainingTime = 6; // Default training time for Archers
+        int trainingCost = 20; // Default training cost for Archers
 
         // Act and Assert
         assertThrows(InvalidQuantityException.class, () -> {
-            Troop.create(troopType, invalidQuantity);
+            Troop.create(troopType, invalidQuantity, trainingTime, trainingCost);
         });
     }
 
     @Test
-    void shouldReturnTrueForValidTroopType() {
+    void shouldAbleToReturnTrueForValidTroopType() {
         // Arrange
         Troopers validTroopType = Troopers.Barbarian;
 
@@ -61,7 +71,7 @@ class TroopTest {
     }
 
     @Test
-    void shouldReturnFalseForInvalidTroopType() {
+    void shouldAbleReturnFalseForInvalidTroopType() {
         // Arrange
         Troopers invalidTroopType = null;
 
@@ -73,7 +83,7 @@ class TroopTest {
     }
 
     @Test
-    void shouldReturnTrueForValidQuantity() {
+    void shouldAbleReturnTrueForValidQuantity() {
         // Arrange
         int validQuantity = 5;
 
@@ -85,7 +95,7 @@ class TroopTest {
     }
 
     @Test
-    void shouldReturnFalseForInvalidQuantity() {
+    void shouldAbleReturnFalseForInvalidQuantity() {
         // Arrange
         int invalidQuantity = -1;
 
@@ -95,5 +105,4 @@ class TroopTest {
         // Assert
         assertFalse(isValid);
     }
-
 }
