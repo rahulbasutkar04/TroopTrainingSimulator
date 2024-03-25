@@ -24,5 +24,21 @@ public class OperationManagerTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void shouldAbleToCreateArmyTroopWithTypeArcher() throws InvalidTroopTypeException, InvalidQuantityException {
+        //Arrange
+        Troopers troopType = Troopers.Archer;
+        int quantity = 5;
+        Troop expected = Troop.create(troopType,quantity);
+
+        //Act
+        OperationManager operationManager = new OperationManager();
+        Troop actual =operationManager.createTroop(troopType,quantity);
+
+        //Assert
+        assertEquals(expected,actual);
+
+    }
+
 
 }
