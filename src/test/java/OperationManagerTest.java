@@ -46,5 +46,27 @@ public class OperationManagerTest {
 
     }
 
+    @Test
+    void shouldTrainTroopSuccessfully() throws InvalidQuantityException, InvalidTroopTypeException, InvalidTrainingTimeException, InvalidTrainingCostException {
+        // Arrange
+        Troopers troopType = Troopers.Barbarian;
+        int initialQuantity = 5;
+        int quantityToTrain = 10;
+        int trainingTime = 3;
+        int trainingCost = 10;
+
+        OperationManager operationManager = new OperationManager();
+        Troop troop = operationManager.createTroop(troopType, initialQuantity, trainingTime, trainingCost);
+
+        // Act
+        int totalTrainedTroops = operationManager.trainTroop(troop,quantityToTrain);
+
+        // Assert
+        int expectedTotalTroops = initialQuantity + quantityToTrain;
+        assertEquals(expectedTotalTroops, totalTrainedTroops);
+    }
+
+
+
 
 }

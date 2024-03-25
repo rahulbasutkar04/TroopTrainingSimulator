@@ -81,6 +81,46 @@ import java.util.Objects;
         public int hashCode() {
             return Objects.hash(troopType, quantity);
         }
+
+        public Troopers getTroopType() {
+            return troopType;
+        }
+
+        public void setTroopType(Troopers troopType) {
+            this.troopType = troopType;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
+
+        public int getTrainingTime() {
+            return trainingTime;
+        }
+
+        public void setTrainingTime(int trainingTime) {
+            this.trainingTime = trainingTime;
+        }
+
+        public int getTrainingCost() {
+            return trainingCost;
+        }
+
+        public void setTrainingCost(int trainingCost) {
+            this.trainingCost = trainingCost;
+        }
+
+        public boolean isTrainingComplete() {
+            return isTrainingComplete;
+        }
+
+        public void setTrainingComplete(boolean trainingComplete) {
+            isTrainingComplete = trainingComplete;
+        }
     }
 
 
